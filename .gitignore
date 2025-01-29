@@ -1,0 +1,20 @@
+cat <<EOF > .gitignore
+# Build artifacts
+build/
+*.o
+*.obj
+*.exe
+*.pdb
+*.dll
+*.so
+*.dylib
+
+# Python cache
+__pycache__/
+*.pyc
+
+# System-specific
+.DS_Store
+Thumbs.db
+
+EOF
