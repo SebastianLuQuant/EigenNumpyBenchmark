@@ -15,3 +15,9 @@ add_executable(test_append
     tests/cpp_tests/test_append.cpp
     src/append.cpp
 )
+
+# Create an executable for testing the 'matmul' functionality
+add_executable(test_matmul
+    tests/cpp_tests/test_matmul.cpp
+    src/matmul.cpp
+)
