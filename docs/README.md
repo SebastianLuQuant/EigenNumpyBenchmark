@@ -1,13 +1,23 @@
 # EigenNumpyBenchmark
 
 ## Overview
-This project aims to compare the performance of Eigen and NumPy by implementing multiple C++ wrappers that mimic NumPy's functionality. The goal is to achieve a fair benchmark between the two.
+EigenNumpyBenchmark is a C++ project that provides NumPy-like operations (e.g., `append`, `matmul`, and more) using [Eigen](https://eigen.tuxfamily.org/) as the backend. The main goal is to compare performance between native C++/Eigen implementations and NumPy, ensuring we have a fair, consistent API for benchmarking.
 
-## Current Status
-- **Initial Commit**: Created project structure with multiple placeholders in the 'include/' directory.
-- Future commits will add:
-  - Eigen as a dependency (in `external/`)
-  - Multiple functions such as `append`, `matmul`, `concat`, `rot90`, etc.
-  - Python bindings via pybind11 or another tool
-  - Comprehensive testing (both C++ and Python)
-  - Detailed performance report
+## Features
+- **2D Append Function**: Allows row-wise and column-wise concatenation of two matrices, with dimension checks that throw exceptions on mismatch.  
+- (Planned) **Additional Operations**: `matmul`, `concat`, `rot90`, `inner`, `outer`, etc.  
+- (Planned) **N-Dimensional Extensions**: Utilizing Eigen's Tensor module or custom templates to handle >2D arrays.  
+- (Planned) **Python Bindings**: Using tools like `pybind11` to benchmark against NumPy directly in Python.
+
+## Installation & Dependencies
+- **Eigen**: A header-only library for linear algebra. Clone or place it under `external/eigen`.  
+- **C++17**: The project requires a C++17-compatible compiler (e.g., GCC 7+, Clang 6+, MSVC 2017+).  
+- **CMake**: Recommended build system (version 3.10 or newer).
+
+### Steps to Build
+1. Clone this repository.
+2. In the `external` folder, clone Eigen:
+   ```bash
+   cd external
+   git clone https://gitlab.com/libeigen/eigen.git
+   cd ..
