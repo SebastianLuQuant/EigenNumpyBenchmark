@@ -39,3 +39,9 @@ add_executable(test_outer
     tests/cpp_tests/test_outer.cpp
     src/outer.cpp
 )
+
+# Create an executable for test_rot90
+add_executable(test_rot90
+    tests/cpp_tests/test_rot90.cpp
+    src/rot90.cpp
+)

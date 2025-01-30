@@ -43,7 +43,7 @@ This file logs the tasks and changes done in each commit.
 
 ## Commit 4: Implement 'concat' for multiple 2D matrices
 
-**Date**: 2025-02-01
+**Date**: 2025-01-30
 **Author**: Yichen Lu
 
 ### What was done
@@ -64,7 +64,7 @@ This file logs the tasks and changes done in each commit.
 
 ## Commit 5: Implement 'inner' and 'outer' for vector operations
 
-**Date**: 2025-02-02
+**Date**: 2025-01-30
 **Author**: Yichen Lu
 
 ### What was done
@@ -83,3 +83,26 @@ This file logs the tasks and changes done in each commit.
 - Possibly implement `rot90`, or consider going into N-dimensional territory.
 - Start Python binding for direct comparison with NumPy.
 - Explore performance benchmarks for these operations.
+
+## Commit 6: Implement 'rot90'
+
+**Date**: 2025-01-31
+**Author**: Yichen Lu
+
+### What was done
+- Added `rot90.h` / `rot90.cpp`: rotate 2D matrices by k*90 degrees.
+
+- Wrote new tests:
+  - `test_rot90.cpp` checks k=1,2,3, negative k, etc.
+- Updated CMakeLists to compile `test_rot90`.
+- Updated README to mention the new features.
+
+### Notes
+- `rot90` is purely 2D, focuses on integer multiples of 90° clockwise.
+
+
+### Next Steps
+- use tamplate to implement `stack`.
+- Start Python bindings to compare performance with NumPy.
+- Add more comprehensive benchmarks or unify these APIs.
+
