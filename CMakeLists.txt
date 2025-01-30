@@ -21,3 +21,9 @@ add_executable(test_matmul
     tests/cpp_tests/test_matmul.cpp
     src/matmul.cpp
 )
+
+# Create an executable for testing the 'concat' functionality
+add_executable(test_concat
+    tests/cpp_tests/test_concat.cpp
+    src/concat.cpp
+)

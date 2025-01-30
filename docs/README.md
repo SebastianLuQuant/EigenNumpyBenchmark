@@ -5,8 +5,9 @@ EigenNumpyBenchmark is a C++ project that provides NumPy-like operations (e.g., 
 
 ## Features
 - **2D Append Function**: Allows row-wise and column-wise concatenation of two matrices, with dimension checks that throw exceptions on mismatch.  
+- **2D Concat Function**: Similar to `numpy.concatenate`, allows multiple matrices to be merged along a chosen axis.
 - **2D Matmul Function**: A straightforward matrix multiplication that mimics `numpy.matmul`, throwing exceptions on dimension mismatch.  
-- (Planned) **Additional Operations**: `concat`, `rot90`, `inner`, `outer`, etc.  
+- (Planned) **Additional Operations**: `rot90`, `inner`, `outer`, etc.  
 - (Planned) **N-Dimensional Extensions**: Utilizing Eigen's Tensor module or custom templates to handle >2D arrays.  
 - (Planned) **Python Bindings**: Using tools like `pybind11` to benchmark against NumPy directly in Python.
 

@@ -39,3 +39,25 @@ This file logs the tasks and changes done in each commit.
 ### Next Steps
 - Potentially implement `concat`, `rot90`, or `inner`, `outer` for further NumPy-like functionalities.
 - Investigate Python bindings if we want direct comparisons with NumPy in Python code.
+
+
+## Commit 4: Implement 'concat' for multiple 2D matrices
+
+**Date**: 2025-02-01
+**Author**: Yichen Lu
+
+### What was done
+- Created a new API: `concat(const std::vector<Eigen::MatrixXd>&, int axis)` in `concat.h`/`concat.cpp`.
+- Allows row-wise or column-wise concatenation of multiple matrices (2D only).
+- Throws `std::invalid_argument` for dimension mismatch or invalid axis.
+- Added `test_concat.cpp` to verify row/column concatenation and exception scenarios.
+- Updated `CMakeLists.txt` to compile the new test, updated `docs/README.md` to reflect the new feature.
+
+### Notes
+- This function generalizes `append` for multiple inputs.
+- Future expansions might handle N-dimensional arrays, using `Eigen::Tensor`.
+
+### Next Steps
+- Possibly add `rot90`, `inner`, or `outer`.
+- Further refine or unify the APIs for all these NumPy-like functionalities.
+- (Optionally) Begin Python bindings or add benchmark code.
