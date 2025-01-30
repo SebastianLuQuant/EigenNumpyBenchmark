@@ -27,3 +27,15 @@ add_executable(test_concat
     tests/cpp_tests/test_concat.cpp
     src/concat.cpp
 )
+
+# Create an executable for test_inner
+add_executable(test_inner
+    tests/cpp_tests/test_inner.cpp
+    src/inner.cpp
+)
+
+# Create an executable for test_outer
+add_executable(test_outer
+    tests/cpp_tests/test_outer.cpp
+    src/outer.cpp
+)

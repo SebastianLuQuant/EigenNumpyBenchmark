@@ -61,3 +61,25 @@ This file logs the tasks and changes done in each commit.
 - Possibly add `rot90`, `inner`, or `outer`.
 - Further refine or unify the APIs for all these NumPy-like functionalities.
 - (Optionally) Begin Python bindings or add benchmark code.
+
+## Commit 5: Implement 'inner' and 'outer' for vector operations
+
+**Date**: 2025-02-02
+**Author**: Yichen Lu
+
+### What was done
+- Added `inner.h`/`.cpp` for 1D dot product.
+- Added `outer.h`/`.cpp` for outer product of two 1D vectors.
+- Each function has its own test: `test_inner.cpp`, `test_outer.cpp`.
+- Updated CMakeLists.txt to compile `test_inner` and `test_outer`.
+- Updated `README.md` to reflect the new functionalities.
+
+### Notes
+- We currently handle only simple 1D vectors for `inner` and `outer`. 
+- For multi-dimensional arrays, further extension is possible.
+- No dimension mismatch check in `outer`, because it doesn't require matching sizes. 
+
+### Next Steps
+- Possibly implement `rot90`, or consider going into N-dimensional territory.
+- Start Python binding for direct comparison with NumPy.
+- Explore performance benchmarks for these operations.
