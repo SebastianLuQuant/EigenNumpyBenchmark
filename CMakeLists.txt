@@ -16,10 +16,10 @@ add_executable(test_append
     src/append.cpp
 )
 
-# Create an executable for testing the 'matmul' functionality
-add_executable(test_matmul
-    tests/cpp_tests/test_matmul.cpp
-    src/matmul.cpp
+# Create an executable for testing the 'matmult' functionality
+add_executable(test_matmult
+    tests/cpp_tests/test_matmult.cpp
+    src/matmult.cpp
 )
 
 # Create an executable for testing the 'concat' functionality

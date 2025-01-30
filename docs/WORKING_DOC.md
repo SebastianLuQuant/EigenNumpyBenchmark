@@ -19,22 +19,22 @@ This file logs the tasks and changes done in each commit.
 - The function signature in `append.h` now explicitly states the exception behavior.
 
 ### Next Actions
-- Potentially implement other NumPy-like operations (e.g., `matmul`).
+- Potentially implement other NumPy-like operations (e.g., `matmult`).
 - Add a benchmark or main function to measure performance.
 - Integrate Python bindings.
 
-## Commit 3: Implement `matmul` for 2D multiplication
+## Commit 3: Implement `matmult` for 2D multiplication
 
 **Date**: 2025-01-31  
 **Author**: Yichen Lu
 
 ### What was done
-- Created `matmul.h` and `matmul.cpp` to handle 2D matrix multiplication with Eigen.
+- Created `matmult.h` and `matmult.cpp` to handle 2D matrix multiplication with Eigen.
 - Throws `std::invalid_argument` if `A.cols() != B.rows()`.
-- Added a new test executable (`test_matmul`) to verify:
+- Added a new test executable (`test_matmult`) to verify:
   - Correct multiplication output.
   - Proper exception handling on dimension mismatch.
-- Updated `docs/README.md` to include `matmul` under features.
+- Updated `docs/README.md` to include `matmult` under features.
 
 ### Next Steps
 - Potentially implement `concat`, `rot90`, or `inner`, `outer` for further NumPy-like functionalities.

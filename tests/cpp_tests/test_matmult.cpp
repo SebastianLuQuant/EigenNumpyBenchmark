@@ -1,10 +1,10 @@
 #include <iostream>
 #include <cassert>
 #include <Eigen/Dense>
-#include "matmul.h"
+#include "matmult.h"
 
 int main() {
-    std::cout << "[Test] matmul function\n";
+    std::cout << "[Test] matmult function\n";
 
     // Simple 2x3 * 3x2
     Eigen::MatrixXd A(2, 3);
@@ -21,7 +21,7 @@ int main() {
     // => [14, 32]
     //    [32, 77]
 
-    Eigen::MatrixXd result = matmul(A, B);
+    Eigen::MatrixXd result = matmult(A, B);
 
     assert(result.rows() == 2);
     assert(result.cols() == 2);
@@ -39,13 +39,13 @@ int main() {
         // But if we pass a 2x2?
         Eigen::MatrixXd C(2,2);
         C.setRandom();
-        auto shouldFail = matmul(A, C);
+        auto shouldFail = matmult(A, C);
     } catch (const std::invalid_argument& e) {
         exceptionThrown = true;
         std::cout << "Caught expected exception: " << e.what() << "\n";
     }
     assert(exceptionThrown);
 
-    std::cout << "[Test] matmul function: ALL TESTS PASSED.\n";
+    std::cout << "[Test] matmult function: ALL TESTS PASSED.\n";
     return 0;
 }
