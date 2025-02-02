@@ -51,6 +51,16 @@ add_executable(test_append_nd
     tests/cpp_tests/test_append_nd.cpp
 )
 
+# Create an executable for testing ND concat (concat_nd)
+add_executable(test_concat_nd
+    tests/cpp_tests/test_concat_nd.cpp
+)
+
+# Create an executable for testing ND stack (stack_nd)
+add_executable(test_stack_nd
+    tests/cpp_tests/test_stack_nd.cpp
+)
+
 # Create an executable for the C++ benchmark program
 add_executable(benchmark_eigen
     tests/cpp_tests/benchmark_eigen.cpp
