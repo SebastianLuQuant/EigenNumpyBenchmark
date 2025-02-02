@@ -19,15 +19,15 @@ ext_modules = [
             pybind11.get_include()     # pybind11
         ],
         language="c++",
-        extra_compile_args=["-std=c++17"],
+        extra_compile_args=["-std=c++17", "-O3", "-mcpu=native"],
     ),
 ]
 
 setup(
     name="MyPyEigen",
-    version="0.1",
+    version="0.2",
     author="Yichen Lu",
-    description="Python bindings for my Eigen-based C++ wrappers",
+    description="Python bindings for my Eigen-based C++ wrappers, optimized by O3",
     ext_modules=ext_modules,
     install_requires=["pybind11", "numpy"],
     zip_safe=False,

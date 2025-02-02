@@ -1,7 +1,7 @@
 Metadata-Version: 2.2
 Name: MyPyEigen
-Version: 0.1
-Summary: Python bindings for my Eigen-based C++ wrappers
+Version: 0.2
+Summary: Python bindings for my Eigen-based C++ wrappers, optimized by O3
 Author: Yichen Lu
 Requires-Dist: pybind11
 Requires-Dist: numpy

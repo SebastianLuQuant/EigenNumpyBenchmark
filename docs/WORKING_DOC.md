@@ -106,3 +106,33 @@ This file logs the tasks and changes done in each commit.
 - Start Python bindings to compare performance with NumPy.
 - Add more comprehensive benchmarks or unify these APIs.
 
+## Commit 7: Successfully Built and Imported MyPyEigen
+
+**Date**: 2025-02-02  
+**Author**: Yichen Lu  
+
+### What was done
+- Successfully compiled and installed `MyPyEigen` as a Python module.
+- Verified that `import mypyeigen` works in Python.
+- Implemented and tested the following functions:
+  - `matmult(A, B)`: Matrix multiplication.
+  - `append(A, B, axis)`: Matrix concatenation along a single axis.
+  - `concat([A, B, C], axis)`: Multi-matrix concatenation.
+  - `inner(v1, v2)`: Computes dot product (inner product).
+  - `outer(v1, v2)`: Computes outer product.
+  - `rot90(A, k)`: Rotates matrix `A` by `90*k` degrees.
+
+### Test Results
+- All functions were verified in **Jupyter Notebook (`test_MyPyEigen.ipynb`)**.
+- Functions return results identical to NumPy (`numpy.matmul`, `numpy.concatenate`, etc.).
+- Handled edge cases:
+  - **Dimension mismatch**: Properly throws `ValueError` in Python.
+  - **Rotation direction**: `rot90(A, -1)` behaves as `rot90(A, 3)`.
+
+### Next Steps
+- Implement **stacking operations** (`numpy.stack` equivalent).
+- Add **performance benchmarks** (compare Eigen vs. NumPy).
+- Extend **N-dimensional support** for concatenation and rotation.
+- Optimize **vectorized operations** for speed.
+
+现在的做法是把numpy.array转化为eigen的数据类型算在eigen耗时里面，这是不公平的，我们应该把数据类型转换单独拿出来。

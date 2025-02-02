@@ -45,3 +45,21 @@ add_executable(test_rot90
     tests/cpp_tests/test_rot90.cpp
     src/rot90.cpp
 )
+
+# Create an executable for testing ND append (append_nd)
+add_executable(test_append_nd
+    tests/cpp_tests/test_append_nd.cpp
+)
+
+# Create an executable for the C++ benchmark program
+add_executable(benchmark_eigen
+    tests/cpp_tests/benchmark_eigen.cpp
+    src/append.cpp
+    src/concat.cpp
+    src/inner.cpp
+    src/matmult.cpp
+    src/outer.cpp
+    src/rot90.cpp
+)
+# Add optimization flags
+target_compile_options(benchmark_eigen PRIVATE -O3 -march=native)
