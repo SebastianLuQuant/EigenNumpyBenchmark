@@ -1,0 +1,15 @@
+MyPyEigen.cpp
+pyproject.toml
+setup.py
+../src/append.cpp
+../src/concat.cpp
+../src/inner.cpp
+../src/matmult.cpp
+../src/outer.cpp
+../src/rot90.cpp
+MyPyEigen.egg-info/PKG-INFO
+MyPyEigen.egg-info/SOURCES.txt
+MyPyEigen.egg-info/dependency_links.txt
+MyPyEigen.egg-info/not-zip-safe
+MyPyEigen.egg-info/requires.txt
+MyPyEigen.egg-info/top_level.txt
