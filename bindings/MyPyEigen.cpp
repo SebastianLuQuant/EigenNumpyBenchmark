@@ -17,6 +17,9 @@
 #include "concat_nd.h"
 #include "stack_nd.h"  // This file should include (and internally include) concat_nd.h
 
+// Include FFT interfaces
+#include "fft.h"
+
 namespace py = pybind11;
 
 /* ----------------- 2D Conversion Functions ----------------- */
@@ -219,6 +222,34 @@ py::array_t<double> py_stack_nd_2(py::list arr_list, int axis) {
     return eigen_to_numpy_3d(out);
 }
 
+/* ========== FFT Wrapper ========== */
+/**
+ * @brief Python wrapper for FFT.
+ * Accepts a 1D NumPy array (dtype: float64) and returns a 1D NumPy array of complex numbers,
+ * computing the discrete Fourier Transform using Eigen's FFT.
+ */
+py::array_t<std::complex<double>> py_fft(py::array_t<double> input) {
+    py::buffer_info buf = input.request();
+    if (buf.ndim != 1) {
+        throw std::runtime_error("fft: Only 1D arrays are supported.");
+    }
+    size_t n = buf.shape[0];
+    double* ptr = static_cast<double*>(buf.ptr);
+    std::vector<double> vec_input(ptr, ptr + n);
+    
+    // Call the fft function defined in fft.cpp.
+    std::vector<std::complex<double>> fft_result = fft(vec_input);
+    
+    auto result = py::array_t<std::complex<double>>(n);
+    py::buffer_info res_buf = result.request();
+    std::complex<double>* res_ptr = static_cast<std::complex<double>*>(res_buf.ptr);
+    for (size_t i = 0; i < n; ++i) {
+        res_ptr[i] = fft_result[i];
+    }
+    return result;
+}
+
+
 /**
  * @brief Module definition.
  */
@@ -237,4 +268,8 @@ PYBIND11_MODULE(MyPyEigen, m) {
     m.def("append_nd", &py_append_nd_3, "Append two 3D arrays along a specified axis");
     m.def("concat_nd", &py_concat_nd_3, "Concatenate a list of 3D arrays along a specified axis");
     m.def("stack_nd",  &py_stack_nd_2,  "Stack a list of 2D arrays along a new axis (resulting in a 3D array)");
+
+    // FFT Interface
+    m.def("fft", &py_fft, "Compute the 1D discrete Fourier Transform using Eigen's FFT");
+
 }

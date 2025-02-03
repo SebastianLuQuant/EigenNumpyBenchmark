@@ -25,9 +25,9 @@ ext_modules = [
 
 setup(
     name="MyPyEigen",
-    version="0.3",
+    version="0.4",
     author="Yichen Lu",
-    description="Python bindings for my Eigen-based C++ wrappers, optimized by O3, with N-Dimension operation implemented",
+    description="Python bindings for my Eigen-based C++ wrappers, optimized by O3, with N-Dimension operation and fft implemented",
     ext_modules=ext_modules,
     install_requires=["pybind11", "numpy"],
     zip_safe=False,

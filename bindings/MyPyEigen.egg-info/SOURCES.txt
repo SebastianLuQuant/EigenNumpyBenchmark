@@ -3,6 +3,7 @@ pyproject.toml
 setup.py
 ../src/append.cpp
 ../src/concat.cpp
+../src/fft.cpp
 ../src/inner.cpp
 ../src/matmult.cpp
 ../src/outer.cpp
