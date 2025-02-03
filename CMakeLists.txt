@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Add include directories for Eigen and our own headers
 include_directories(
     ${PROJECT_SOURCE_DIR}/external/eigen
+    ${PROJECT_SOURCE_DIR}/external/eigen/unsupported
     ${PROJECT_SOURCE_DIR}/include
 )
 
@@ -59,6 +60,11 @@ add_executable(test_concat_nd
 # Create an executable for testing ND stack (stack_nd)
 add_executable(test_stack_nd
     tests/cpp_tests/test_stack_nd.cpp
+)
+
+add_executable(test_fft
+    tests/cpp_tests/test_fft.cpp
+    src/fft.cpp
 )
 
 # Create an executable for the C++ benchmark program
