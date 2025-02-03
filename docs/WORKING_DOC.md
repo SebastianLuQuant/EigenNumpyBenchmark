@@ -1,138 +1,108 @@
-# Working Doc
+# WORKING DOCUMENTATION
 
-This file logs the tasks and changes done in each commit.
+## Project Overview
 
-## Commit 2: Implemented 2D Append with Exception Handling
+MyPyEigen is a Python extension module designed to provide a NumPy-like interface while leveraging the high-performance Eigen C++ library for linear algebra operations. Our goal has been to enable fair performance comparisons between Eigen-based implementations and NumPy’s optimized routines. Over several versions, we have progressively extended the functionality from basic 2D operations to n-dimensional (ND) operations and added a bonus FFT wrapper.
 
-**Date**: 2025-01-30  
-**Author**: Yichen Lu
+## Version History and Implementation Story
 
-### What was done
-- Revisited the `append` function to align with NumPy's behavior:
-  - Throws `std::invalid_argument` if the dimensions do not match.
-  - Supports `axis=0` (row-wise) and `axis=1` (column-wise).
-- Updated the test (`test_append.cpp`) to verify exceptions are thrown as expected.
-- Updated `docs/README.md` to reflect this progress.
+### v0.1 – Initial 2D Interfaces
+- **Implementation:**  
+  Implemented basic 2D operations including `append`, `concat`, `matmult`, `inner`, `outer`, and `rot90` in the `include/` and `src/` directories.
+- **Testing:**  
+  Developed dedicated C++ tests and Python binding tests to verify correctness.
+- **Outcome:**  
+  Established a working baseline for our Eigen-based operations with an interface similar to NumPy.
 
-### Key Points
-- We remain focused on **2D** for now. Future commits may add an **N-dimensional** version using `Eigen::Tensor`. And the 2d version will be renamed as `append_2d`
-- The function signature in `append.h` now explicitly states the exception behavior.
+### v0.2 – Compiler Optimization and 2D Performance Analysis
+- **Enhancements:**  
+  Applied compiler optimizations (`-O3`, `-march=native`) to reduce overhead.
+- **Benchmarking:**  
+  Compared performance between NumPy, MyPyEigen (via Python bindings), and native C++ Eigen.  
+  Noted that MyPyEigen sometimes showed higher overhead, possibly due to conversion costs (e.g., converting NumPy arrays to `Eigen::MatrixXd`).
+- **Outcome:**  
+  Direct C++ benchmarks confirmed that data conversion contributes noticeably to the overall runtime, providing a rationale for further optimizations.
 
-### Next Actions
-- Potentially implement other NumPy-like operations (e.g., `matmult`).
-- Add a benchmark or main function to measure performance.
-- Integrate Python bindings.
+### v0.3 – ND Interfaces with Template Implementation
+- **Implementation:**  
+  Developed ND versions of key operations:
+  - **append_nd:** Appends two 3D arrays along a specified axis.
+  - **concat_nd:** Concatenates a list of 3D arrays along a specified axis.
+  - **stack_nd:** Stacks a list of 2D arrays along a new axis (resulting in a 3D array) by internally converting each 2D array to an Eigen tensor and then concatenating them (using `concat_nd`).
+- **Testing:**  
+  Created dedicated C++ tests (`test_append_nd.cpp`, `test_concat_nd.cpp`, `test_stack_nd.cpp`) and updated Python Jupyter Notebook benchmarks.
+- **Outcome:**  
+  ND interfaces function correctly and mimic NumPy’s behavior, though they reveal additional overhead due to conversion and copying.
 
-## Commit 3: Implement `matmult` for 2D multiplication
+### v0.4 – Bonus FFT Wrapper
+- **Implementation:**  
+  Developed an FFT wrapper (declared in `fft.h` and implemented in `fft.cpp`) using Eigen’s FFT module.  
+  The Python binding (`pe.fft`) converts a 1D NumPy array to a `std::vector<double>`, calls the FFT function, and returns a 1D NumPy array of complex numbers.
+- **Testing:**  
+  Verified FFT functionality with dedicated C++ tests (`test_fft.cpp`) and Python benchmark notebooks.
+- **Outcome:**  
+  The FFT wrapper shows competitive performance, especially for smaller input sizes, compared to NumPy’s FFT.
 
-**Date**: 2025-01-31  
-**Author**: Yichen Lu
+## Testing and Benchmarking
 
-### What was done
-- Created `matmult.h` and `matmult.cpp` to handle 2D matrix multiplication with Eigen.
-- Throws `std::invalid_argument` if `A.cols() != B.rows()`.
-- Added a new test executable (`test_matmult`) to verify:
-  - Correct multiplication output.
-  - Proper exception handling on dimension mismatch.
-- Updated `docs/README.md` to include `matmult` under features.
+### C++ Testing
+- C++ tests are located in `tests/cpp_tests/`:
+  - 2D tests: `test_append.cpp`, `test_concat.cpp`, `test_matmult.cpp`, `test_inner.cpp`, `test_outer.cpp`, `test_rot90.cpp`
+  - ND tests: `test_append_nd.cpp`, `test_concat_nd.cpp`, `test_stack_nd.cpp`
+  - FFT test: `test_fft.cpp`
+- Benchmarks (e.g., `benchmark_eigen.cpp`) measure pure computational performance (excluding Python binding overhead) using high optimization flags.
 
-### Next Steps
-- Potentially implement `concat`, `rot90`, or `inner`, `outer` for further NumPy-like functionalities.
-- Investigate Python bindings if we want direct comparisons with NumPy in Python code.
+### Python Testing and Benchmarking
+- Jupyter Notebooks under `tests/py_tests/` (e.g., `benchmark_0.1.ipynb`, `benchmark_0.3_nd.ipynb`, `benchmark_0.4_fft.ipynb`) are used to run functional tests and performance benchmarks.
+- Benchmarks use a fixed random seed, preheating, and averaging over multiple iterations to ensure reliability.
 
+## Performance Benchmark Analysis
 
-## Commit 4: Implement 'concat' for multiple 2D matrices
+The following benchmark results compare the performance of key operations in NumPy, MyPyEigen (via Python bindings), and native C++ Eigen implementations. Our benchmarks were designed with the following considerations:
 
-**Date**: 2025-01-30
-**Author**: Yichen Lu
+1. **Preheating/Caching:**  
+   We preheat function calls to minimize one-time initialization or cache-warmup overhead.
 
-### What was done
-- Created a new API: `concat(const std::vector<Eigen::MatrixXd>&, int axis)` in `concat.h`/`concat.cpp`.
-- Allows row-wise or column-wise concatenation of multiple matrices (2D only).
-- Throws `std::invalid_argument` for dimension mismatch or invalid axis.
-- Added `test_concat.cpp` to verify row/column concatenation and exception scenarios.
-- Updated `CMakeLists.txt` to compile the new test, updated `docs/README.md` to reflect the new feature.
+2. **Reproducibility:**  
+   A fixed random seed (`np.random.seed(12345)`) is used to ensure that test cases are consistent across runs.
 
-### Notes
-- This function generalizes `append` for multiple inputs.
-- Future expansions might handle N-dimensional arrays, using `Eigen::Tensor`.
+3. **Data Preprocessing Exclusion:**  
+   Test arrays are generated before timing so that the overhead of data creation and conversion is excluded from the benchmark.
 
-### Next Steps
-- Possibly add `rot90`, `inner`, or `outer`.
-- Further refine or unify the APIs for all these NumPy-like functionalities.
-- (Optionally) Begin Python bindings or add benchmark code.
+4. **Range of Test Sizes:**  
+   Benchmarks cover a wide range of sizes (from 10x10 to 5000x5000) to observe how performance scales with problem size.
 
-## Commit 5: Implement 'inner' and 'outer' for vector operations
+5. **Data Type Consistency:**  
+   All arrays are generated with `np.float64` (64-bit double) to ensure a fair comparison with Eigen's double-based computations.
 
-**Date**: 2025-01-30
-**Author**: Yichen Lu
+**Key Takeaways:**
+- **Matrix Multiplication (`matmult`):**  
+  NumPy’s multi-threaded BLAS routines give it a significant advantage for large matrices. Our Eigen-based implementations are 4–5× slower at larger scales.
+- **Row-wise Appending and Concatenation:**  
+  While differences are small for small matrices, the overhead becomes significant for larger matrices—likely due to additional data conversion and memory copy operations.
+- **Vector Operations (`inner` and `outer`):**  
+  Native C++ Eigen is exceptionally fast for small vectors (up to 23× speedup), though MyPyEigen’s binding overhead makes it 2–4× slower than NumPy.
+- **Matrix Rotation (`rot90`):**  
+  NumPy’s zero-copy, view-based rotation is orders of magnitude faster than our Eigen-based implementation, which performs physical data rearrangement.
+- **FFT:**  
+  Our FFT wrapper outperforms NumPy’s FFT for small input sizes (up to 2.67× faster) and remains competitive for larger sizes, indicating that for certain operations Eigen’s FFT is very efficient.
 
-### What was done
-- Added `inner.h`/`.cpp` for 1D dot product.
-- Added `outer.h`/`.cpp` for outer product of two 1D vectors.
-- Each function has its own test: `test_inner.cpp`, `test_outer.cpp`.
-- Updated CMakeLists.txt to compile `test_inner` and `test_outer`.
-- Updated `README.md` to reflect the new functionalities.
+Overall, while MyPyEigen provides a convenient and consistent interface with Eigen, it suffers from moderate overhead due to data conversion and binding. NumPy remains superior for large-scale operations, but native C++ Eigen shows strong performance in micro-benchmarks for vector operations.
 
-### Notes
-- We currently handle only simple 1D vectors for `inner` and `outer`. 
-- For multi-dimensional arrays, further extension is possible.
-- No dimension mismatch check in `outer`, because it doesn't require matching sizes. 
+## Future Work
 
-### Next Steps
-- Possibly implement `rot90`, or consider going into N-dimensional territory.
-- Start Python binding for direct comparison with NumPy.
-- Explore performance benchmarks for these operations.
+- **Optimize Data Conversion:**  
+  Implement a `to_eigen` preprocessing step to minimize repeated conversions.
+- **Extend ND Interfaces:**  
+  Add further ND operations (advanced slicing, higher-dimensional stacking, etc.) and optimize their performance.
+- **Dynamic Template Instantiation:**  
+  Investigate dynamic instantiation of templates based on input dimensions, while monitoring for any additional overhead.
+- **Enhance FFT Wrapper:**  
+  Expand FFT functionality to include normalization, inverse FFT, and additional parameters.
+- **Comprehensive Performance Reporting:**  
+  Prepare detailed performance reports with graphical analyses comparing Eigen-based operations and NumPy’s routines.
 
-## Commit 6: Implement 'rot90'
+## Conclusion
 
-**Date**: 2025-01-31
-**Author**: Yichen Lu
+MyPyEigen demonstrates that a NumPy-like interface can be built using Eigen to deliver high-performance linear algebra operations. Although additional overhead exists due to data conversion and Python binding, especially in ND operations, our project lays a solid foundation for further optimization and extension.
 
-### What was done
-- Added `rot90.h` / `rot90.cpp`: rotate 2D matrices by k*90 degrees.
-
-- Wrote new tests:
-  - `test_rot90.cpp` checks k=1,2,3, negative k, etc.
-- Updated CMakeLists to compile `test_rot90`.
-- Updated README to mention the new features.
-
-### Notes
-- `rot90` is purely 2D, focuses on integer multiples of 90° clockwise.
-
-
-### Next Steps
-- use tamplate to implement `stack`.
-- Start Python bindings to compare performance with NumPy.
-- Add more comprehensive benchmarks or unify these APIs.
-
-## Commit 7: Successfully Built and Imported MyPyEigen
-
-**Date**: 2025-02-02  
-**Author**: Yichen Lu  
-
-### What was done
-- Successfully compiled and installed `MyPyEigen` as a Python module.
-- Verified that `import mypyeigen` works in Python.
-- Implemented and tested the following functions:
-  - `matmult(A, B)`: Matrix multiplication.
-  - `append(A, B, axis)`: Matrix concatenation along a single axis.
-  - `concat([A, B, C], axis)`: Multi-matrix concatenation.
-  - `inner(v1, v2)`: Computes dot product (inner product).
-  - `outer(v1, v2)`: Computes outer product.
-  - `rot90(A, k)`: Rotates matrix `A` by `90*k` degrees.
-
-### Test Results
-- All functions were verified in **Jupyter Notebook (`test_MyPyEigen.ipynb`)**.
-- Functions return results identical to NumPy (`numpy.matmul`, `numpy.concatenate`, etc.).
-- Handled edge cases:
-  - **Dimension mismatch**: Properly throws `ValueError` in Python.
-  - **Rotation direction**: `rot90(A, -1)` behaves as `rot90(A, 3)`.
-
-### Next Steps
-- Implement **stacking operations** (`numpy.stack` equivalent).
-- Add **performance benchmarks** (compare Eigen vs. NumPy).
-- Extend **N-dimensional support** for concatenation and rotation.
-- Optimize **vectorized operations** for speed.
-
-现在的做法是把numpy.array转化为eigen的数据类型算在eigen耗时里面，这是不公平的，我们应该把数据类型转换单独拿出来。
